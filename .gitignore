@@ -1,0 +1,24 @@
+# Spago and compiler output
+.spago/
+output/
+output-es/
+generated-docs/
+spago.lock.orig
+
+# Bundles
+demos/*/dist/
+demos/*/*.js.map
+
+# Node and native builds
+node_modules/
+build/
+*.node
+
+# Editors and OS files
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json

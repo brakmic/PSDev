@@ -1,0 +1,10 @@
+.git
+.git/**
+.github/**
+.devcontainer/**
+demos/**
+*.md
+LICENSE
+.gitignore
+.dockerignore
+.gitattributes

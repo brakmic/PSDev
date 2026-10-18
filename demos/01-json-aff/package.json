@@ -1,0 +1,10 @@
+{
+  "name": "psdev-json-aff",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Typed JSON decoding and HTTP requests with Aff",
+  "dependencies": {
+    "xhr2": "^0.2.1"
+  }
+}

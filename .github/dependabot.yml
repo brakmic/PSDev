@@ -1,0 +1,19 @@
+version: 2
+
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: weekly
+    ignore:
+      # Ubuntu date tags are deliberate base-image upgrades that need a full
+      # build, demo test, and release. Dependabot should not propose them.
+      - dependency-name: ubuntu
+        update-types:
+          - version-update:semver-major
+          - version-update:semver-minor

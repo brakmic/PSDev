@@ -1,0 +1,24 @@
+{
+  "name": "PSDev",
+  "build": {
+    "dockerfile": "../Dockerfile",
+    "context": ".."
+  },
+  "remoteUser": "psdev",
+  "workspaceFolder": "/workspace",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "nwolverson.ide-purescript",
+        "EditorConfig.EditorConfig"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "files.insertFinalNewline": true,
+        "files.trimTrailingWhitespace": true
+      }
+    }
+  },
+  "postCreateCommand": "purs --version && spago --version"
+}

@@ -1,0 +1,24 @@
+package:
+  name: typed-calculator
+  dependencies:
+    - arrays
+    - console
+    - effect
+    - either
+    - foldable-traversable
+    - integers
+    - lists
+    - prelude
+    - profunctor-lenses
+    - strings
+    - variant
+  test:
+    main: Test.Main
+    dependencies:
+      - quickcheck
+      - spec
+      - spec-node
+workspace:
+  packageSet:
+    registry: 81.7.0
+  extraPackages: {}

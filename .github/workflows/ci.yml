@@ -1,0 +1,83 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - ".github/**"
+      - "*.md"
+      - "LICENSE"
+      - ".gitignore"
+      - ".dockerignore"
+      - ".gitattributes"
+  pull_request:
+    paths-ignore:
+      - ".github/**"
+      - "*.md"
+      - "LICENSE"
+      - ".gitignore"
+      - ".dockerignore"
+      - ".gitattributes"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref_type != 'tag' }}
+
+jobs:
+  image:
+    name: Image and demos
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Build image
+        run: |
+          docker build \
+            --build-arg PSDEV_IMAGE_REVISION="${GITHUB_SHA}" \
+            -t psdev:ci \
+            .
+
+      - name: Verify toolchain
+        run: |
+          docker run --rm psdev:ci bash -lc '
+            purs --version
+            spago --version
+            purs-tidy --version
+            purs-backend-es --version
+            node --version
+            g++ --version | head -1
+          '
+
+      - name: JSON and Aff demo
+        run: |
+          docker run --rm \
+            -v "${GITHUB_WORKSPACE}/demos/01-json-aff:/workspace" \
+            psdev:ci \
+            bash -lc 'npm ci --no-fund --no-audit && spago build && spago run'
+
+      - name: Halogen demo
+        run: |
+          docker run --rm \
+            -v "${GITHUB_WORKSPACE}/demos/02-halogen-spa:/workspace" \
+            psdev:ci \
+            bash -lc 'spago build && mkdir -p dist && spago bundle --platform browser --outfile dist/bundle.js'
+
+      - name: C++ FFI demo
+        run: |
+          docker run --rm \
+            -v "${GITHUB_WORKSPACE}/demos/03-ffi-cpp:/workspace" \
+            psdev:ci \
+            bash -lc 'npm ci --no-fund --no-audit && spago build && spago run'
+
+      - name: Typed calculator demo
+        run: |
+          docker run --rm \
+            -v "${GITHUB_WORKSPACE}/demos/04-typed-calculator:/workspace" \
+            psdev:ci \
+            bash -lc 'spago test'
