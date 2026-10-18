@@ -36,6 +36,12 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
+      # The container runs as the psdev user with UID 1000. GitHub-hosted
+      # runners check out the repository under a different UID, so the bind
+      # mounts must be writable for the container user.
+      - name: Make demos writable by the container user
+        run: chmod -R a+rwX "${GITHUB_WORKSPACE}/demos"
+
       - name: Build image
         run: |
           docker build \
