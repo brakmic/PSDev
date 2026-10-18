@@ -22,3 +22,7 @@ Thumbs.db
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.json
+
+# spec-node run state
+.spec-results
+
