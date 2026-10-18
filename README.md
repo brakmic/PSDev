@@ -37,7 +37,9 @@ spago run
 ```
 
 The image runs as the non-root user `psdev` (UID 1000) and has passwordless
-`sudo`.
+`sudo`. On Linux hosts, make sure the mounted project directory is writable by
+UID 1000; Docker Desktop on Windows and macOS maps file ownership
+automatically.
 
 ## Demos
 
